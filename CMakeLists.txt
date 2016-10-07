@@ -9,6 +9,8 @@ include(cmake/RecurseSubdirs.cmake)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
 
 # Add compiler flags
 add_compile_options(-std=c++11 -Wall)
@@ -28,6 +30,6 @@ set(LIBRARIES
 HEADER_DIRECTORIES(MAVLINK_INCLUDES "3dparty/mavlink_v1")
 
 # Subdirectories
-# add_subdirectory(common)
+add_subdirectory(common)
 # add_subdirectory(uav)
 add_subdirectory(gcs)
