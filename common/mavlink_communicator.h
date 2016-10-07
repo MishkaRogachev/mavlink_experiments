@@ -34,7 +34,7 @@ namespace domain
     protected slots:
         void onDataReceived(const QByteArray& data);
 
-    private:
+    protected:
         QMap<AbstractLink*, uint8_t> m_linkChannels;
         AbstractLink* m_lastReceivedLink = nullptr;
 
