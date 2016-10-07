@@ -27,7 +27,7 @@ set(LIBRARIES
 )
 
 # Include mavlink headers globaly
-HEADER_DIRECTORIES(MAVLINK_INCLUDES "3dparty/mavlink_v1")
+HEADER_DIRECTORIES(INCLUDES "3dparty/mavlink_v1")
 
 # Subdirectories
 add_subdirectory(common)
