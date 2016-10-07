@@ -30,4 +30,4 @@ HEADER_DIRECTORIES(MAVLINK_INCLUDES "3dparty/mavlink_v1")
 # Subdirectories
 # add_subdirectory(common)
 # add_subdirectory(uav)
-# add_subdirectory(gcs)
+add_subdirectory(gcs)
