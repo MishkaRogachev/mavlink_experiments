@@ -1,17 +1,34 @@
+// MAVLink
+#include <mavlink.h>
+
 // Qt
 #include <QCoreApplication>
 
 // Internal
 #include "udp_link.h"
-#include "gcs_communicator.h"
+#include "serial_link.h"
+
+#include "mavlink_communicator.h"
+
+#include "heartbeat_handler.h"
 
 int main(int argc, char* argv[])
 {
     QCoreApplication app(argc, argv);
 
-    domain::GcsCommunicator communicator;
+    // Для GCS 255 является стандартным sysid
+    domain::MavLinkCommunicator communicator(255, 0);
 
-    domain::UdpLink link(50001, QString("127.0.0.1"), 50002);
+    domain::HeartbeatHandler heartbeatHandler(MAV_TYPE_GCS);
+    QObject::connect(&communicator, &domain::MavLinkCommunicator::messageReceived,
+                     &heartbeatHandler, &domain::HeartbeatHandler::processMessage);
+    // heartbeat отправляем на все доступные каналы связи
+    QObject::connect(&heartbeatHandler, &domain::HeartbeatHandler::sendMessage,
+                     &communicator, &domain::MavLinkCommunicator::sendMessageOnAllLinks);
+
+    // Настройки UDP через localhost
+    domain::UdpLink link(14550, QString("127.0.0.1"), 14551);
+    //domain::SerialLink link("/dev/ttyUSB0", 57600);
     communicator.addLink(&link, MAVLINK_COMM_0);
     link.up();
 
