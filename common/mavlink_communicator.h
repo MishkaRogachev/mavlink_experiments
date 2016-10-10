@@ -25,8 +25,8 @@ namespace domain
         void removeLink(AbstractLink* link);
 
         void sendMessage(mavlink_message_t& message, AbstractLink* link);
-        void sendMessageLastReceivedLink(mavlink_message_t& message);
-        void sendMessageAllLinks(mavlink_message_t& message);
+        void sendMessageOnLastReceivedLink(mavlink_message_t& message);
+        void sendMessageOnAllLinks(mavlink_message_t& message);
 
     signals:
         void messageReceived(const mavlink_message_t& message);
@@ -36,10 +36,10 @@ namespace domain
 
     protected:
         QMap<AbstractLink*, uint8_t> m_linkChannels;
-        AbstractLink* m_lastReceivedLink = nullptr;
+        AbstractLink* m_lastReceivedLink;
 
-        const uint8_t m_systemId = 255;
-        const uint8_t m_componentId = 0;
+        const uint8_t m_systemId;
+        const uint8_t m_componentId;
     };
 }
 
