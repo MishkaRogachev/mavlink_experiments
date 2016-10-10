@@ -2,9 +2,9 @@
 Simple Qt app for experiments with MAVLink protocol and testing
 
 ### Dependencies
-  * C++11 compatible compiler
-  * Qt5 development modules: Core Network SerialPort
-  * CMake 2.8.11 or greater
+* C++11 compatible compiler
+* Qt5 development modules: Core Network SerialPort
+* CMake 2.8.11 or greater
   
 #### Ubuntu users can use apt:
 ```
