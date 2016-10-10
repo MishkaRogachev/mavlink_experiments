@@ -17,9 +17,9 @@ int main(int argc, char* argv[])
     QCoreApplication app(argc, argv);
 
     // Для GCS 255 является стандартным sysid
-    domain::MavLinkCommunicator communicator(255, 0);
+    domain::MavLinkCommunicator communicator;
 
-    domain::HeartbeatHandler heartbeatHandler(MAV_TYPE_GCS);
+    domain::HeartbeatHandler heartbeatHandler(MAV_TYPE_GCS, 255, 0);
     QObject::connect(&communicator, &domain::MavLinkCommunicator::messageReceived,
                      &heartbeatHandler, &domain::HeartbeatHandler::processMessage);
     // heartbeat отправляем на все доступные каналы связи

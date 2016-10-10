@@ -7,20 +7,11 @@
 // Internal
 #include "abstract_link.h"
 
-namespace
-{
-    const uint8_t messageKeys[256] = MAVLINK_MESSAGE_CRCS;
-    const uint8_t messageLenghts[256] = MAVLINK_MESSAGE_LENGTHS;
-}
-
 using namespace domain;
 
-MavLinkCommunicator::MavLinkCommunicator(uint8_t systemId, uint8_t componentId,
-                                         QObject* parent):
+MavLinkCommunicator::MavLinkCommunicator(QObject* parent):
     QObject(parent),
-    m_lastReceivedLink(nullptr),
-    m_systemId(systemId),
-    m_componentId(componentId)
+    m_lastReceivedLink(nullptr)
 {
     qRegisterMetaType<mavlink_message_t>("mavlink_message_t");
 }
@@ -46,14 +37,6 @@ void MavLinkCommunicator::removeLink(AbstractLink* link)
 void MavLinkCommunicator::sendMessage(mavlink_message_t& message, AbstractLink* link)
 {
     if (!link || !link->isUp()) return;
-
-    mavlink_finalize_message_chan(&message,
-                                  m_systemId,
-                                  m_componentId,
-                                  m_linkChannels.value(link, 0),
-                                  message.len,
-                                  ::messageLenghts[message.msgid],
-                                  ::messageKeys[message.msgid]);
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     int lenght = mavlink_msg_to_send_buffer(buffer, &message);

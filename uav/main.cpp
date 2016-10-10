@@ -15,9 +15,9 @@ int main(int argc, char* argv[])
 {
     QCoreApplication app(argc, argv);
 
-    domain::MavLinkCommunicator communicator(1, 0);
+    domain::MavLinkCommunicator communicator;
 
-    domain::HeartbeatHandler heartbeatHandler(MAV_TYPE_FIXED_WING);
+    domain::HeartbeatHandler heartbeatHandler(MAV_TYPE_FIXED_WING, 1, 0);
     QObject::connect(&communicator, &domain::MavLinkCommunicator::messageReceived,
                      &heartbeatHandler, &domain::HeartbeatHandler::processMessage);
     QObject::connect(&heartbeatHandler, &domain::HeartbeatHandler::sendMessage,

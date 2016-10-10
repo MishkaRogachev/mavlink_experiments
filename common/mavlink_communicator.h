@@ -17,8 +17,7 @@ namespace domain
         Q_OBJECT
 
     public:
-        MavLinkCommunicator(uint8_t systemId, uint8_t componentId,
-                            QObject* parent = nullptr);
+        MavLinkCommunicator(QObject* parent = nullptr);
 
     public slots:
         void addLink(AbstractLink* link, uint8_t channel);
@@ -37,9 +36,6 @@ namespace domain
     protected:
         QMap<AbstractLink*, uint8_t> m_linkChannels;
         AbstractLink* m_lastReceivedLink;
-
-        const uint8_t m_systemId;
-        const uint8_t m_componentId;
     };
 }
 

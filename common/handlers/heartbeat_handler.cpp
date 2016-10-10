@@ -8,9 +8,12 @@
 
 using namespace domain;
 
-HeartbeatHandler::HeartbeatHandler(uint8_t type, QObject* parent):
+HeartbeatHandler::HeartbeatHandler(uint8_t type, uint8_t systemId,
+                                   uint8_t componentId, QObject* parent):
     AbstractHandler(parent),
-    m_type(type)
+    m_type(type),
+    m_systemId(systemId),
+    m_componentId(componentId)
 {
     this->startTimer(1000); // 1 Hz
 }
@@ -23,8 +26,8 @@ void HeartbeatHandler::timerEvent(QTimerEvent* event)
     mavlink_heartbeat_t heartbeat;
     heartbeat.type = m_type;
 
-    // sysid и comid будут перезаписаны mavlink_finalize_message_chan
-    mavlink_msg_heartbeat_encode(0, 0, &message, &heartbeat);
+    mavlink_msg_heartbeat_encode(m_systemId, m_componentId,
+                                 &message, &heartbeat);
 
     emit sendMessage(message);
 }
