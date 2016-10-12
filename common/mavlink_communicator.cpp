@@ -2,7 +2,6 @@
 
 // MAVLink
 #include <mavlink.h>
-#include <mavlink_types.h>
 
 // Internal
 #include "abstract_link.h"
