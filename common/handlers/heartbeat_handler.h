@@ -10,8 +10,7 @@ namespace domain
         Q_OBJECT
 
     public:
-        HeartbeatHandler(uint8_t type, uint8_t systemId,
-                         uint8_t componentId, QObject* parent = nullptr);
+        HeartbeatHandler(uint8_t type, MavLinkCommunicator* communicator);
 
     protected:
         void timerEvent(QTimerEvent *event) override;
@@ -21,8 +20,6 @@ namespace domain
 
     private:
         const uint8_t m_type;
-        const uint8_t m_systemId;
-        const uint8_t m_componentId;
     };
 }
 

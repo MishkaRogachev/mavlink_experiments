@@ -8,11 +8,29 @@
 
 using namespace domain;
 
-MavLinkCommunicator::MavLinkCommunicator(QObject* parent):
+MavLinkCommunicator::MavLinkCommunicator(uint8_t systemId, uint8_t componentId,
+                                         QObject* parent):
     QObject(parent),
-    m_lastReceivedLink(nullptr)
+    m_lastReceivedLink(nullptr),
+    m_systemId(systemId),
+    m_componentId(componentId)
 {
     qRegisterMetaType<mavlink_message_t>("mavlink_message_t");
+}
+
+QList<AbstractLink*> MavLinkCommunicator::links() const
+{
+    return m_linkChannels.keys();
+}
+
+uint8_t MavLinkCommunicator::systemId() const
+{
+    return m_systemId;
+}
+
+uint8_t MavLinkCommunicator::componentId() const
+{
+    return m_componentId;
 }
 
 void MavLinkCommunicator::addLink(AbstractLink* link, uint8_t channel)
@@ -31,6 +49,16 @@ void MavLinkCommunicator::removeLink(AbstractLink* link)
     m_linkChannels.remove(link);
     disconnect(link, &AbstractLink::dataReceived,
             this, &MavLinkCommunicator::onDataReceived);
+}
+
+void MavLinkCommunicator::setSystemId(uint8_t systemId)
+{
+    m_systemId = systemId;
+}
+
+void MavLinkCommunicator::setComponentId(uint8_t componentId)
+{
+    m_componentId = componentId;
 }
 
 void MavLinkCommunicator::sendMessage(mavlink_message_t& message, AbstractLink* link)

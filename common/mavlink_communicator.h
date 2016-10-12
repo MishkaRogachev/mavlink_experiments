@@ -17,11 +17,20 @@ namespace domain
         Q_OBJECT
 
     public:
-        MavLinkCommunicator(QObject* parent = nullptr);
+        MavLinkCommunicator(uint8_t systemId = 0, uint8_t componentId = 0,
+                            QObject* parent = nullptr);
+
+        QList<AbstractLink*> links() const;
+
+        uint8_t systemId() const;
+        uint8_t componentId() const;
 
     public slots:
         void addLink(AbstractLink* link, uint8_t channel);
         void removeLink(AbstractLink* link);
+
+        void setSystemId(uint8_t systemId);
+        void setComponentId(uint8_t componentId);
 
         void sendMessage(mavlink_message_t& message, AbstractLink* link);
         void sendMessageOnLastReceivedLink(mavlink_message_t& message);
@@ -36,6 +45,9 @@ namespace domain
     protected:
         QMap<AbstractLink*, uint8_t> m_linkChannels;
         AbstractLink* m_lastReceivedLink;
+
+        uint8_t m_systemId;
+        uint8_t m_componentId;
     };
 }
 
