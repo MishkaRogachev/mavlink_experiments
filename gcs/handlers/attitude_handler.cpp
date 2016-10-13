@@ -23,5 +23,5 @@ void AttitudeHandler::processMessage(const mavlink_message_t& message)
 
     qDebug() << "pitch" << qRadiansToDegrees(attitude.pitch)
              << "roll" << qRadiansToDegrees(attitude.roll)
-             << "yaaw" << qRadiansToDegrees(attitude.yaw);
+             << "yaw" << qRadiansToDegrees(attitude.yaw);
 }
