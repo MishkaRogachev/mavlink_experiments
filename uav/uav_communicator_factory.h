@@ -5,12 +5,17 @@
 
 namespace domain
 {
+    class UavModel;
+
     class UavCommunicatorFactory: public AbstractCommunicatorFactory
     {
     public:
-        UavCommunicatorFactory();
+        UavCommunicatorFactory(domain::UavModel* model);
 
         MavLinkCommunicator* create() override;
+
+    private:
+        domain::UavModel* m_model;
     };
 }
 

@@ -1,0 +1,38 @@
+#ifndef UAV_MODEL_H
+#define UAV_MODEL_H
+
+#include <QObject>
+#include <QGeoCoordinate>
+
+namespace domain
+{
+    class UavModel : public QObject
+    {
+        Q_OBJECT
+
+    public:
+        explicit UavModel(QObject* parent = nullptr);
+
+        float pitch() const;
+        float roll() const;
+        float yaw() const;
+
+        float velocity() const;
+
+        QGeoCoordinate position() const;
+
+    protected:
+        void timerEvent(QTimerEvent* event);
+
+    private:
+        float m_pitch;
+        float m_roll;
+        float m_yaw;
+
+        float m_velocity;
+
+        QGeoCoordinate m_position;
+    };
+}
+
+#endif // UAV_MODEL_H

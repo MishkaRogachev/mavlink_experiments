@@ -16,7 +16,7 @@ set(CMAKE_AUTOMOC ON)
 add_compile_options(-std=c++11 -Wall)
 
 # Enable Qt modules
-find_package(Qt5 COMPONENTS Core Network SerialPort REQUIRED)
+find_package(Qt5 COMPONENTS Core Network SerialPort Positioning REQUIRED)
 
 # Global libraries
 set(LIBRARIES
@@ -24,6 +24,7 @@ set(LIBRARIES
     Qt5::Core
     Qt5::Network
     Qt5::SerialPort
+    Qt5::Positioning
 )
 
 # Include mavlink headers globaly

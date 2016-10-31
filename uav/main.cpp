@@ -4,6 +4,7 @@
 // Internal
 #include "udp_link.h"
 
+#include "uav_model.h"
 #include "uav_communicator_factory.h"
 #include "mavlink_communicator.h"
 
@@ -11,7 +12,8 @@ int main(int argc, char* argv[])
 {
     QCoreApplication app(argc, argv);
 
-    domain::UavCommunicatorFactory factory;
+    domain::UavModel model;
+    domain::UavCommunicatorFactory factory(&model);
     domain::MavLinkCommunicator* communicator = factory.create();
     communicator->setParent(&app);
 
