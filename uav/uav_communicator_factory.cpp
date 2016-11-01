@@ -8,6 +8,7 @@
 
 #include "heartbeat_handler.h"
 #include "send_position_handler.h"
+#include "send_attitude_handler.h"
 
 using namespace domain;
 
@@ -21,6 +22,7 @@ MavLinkCommunicator* UavCommunicatorFactory::create()
 
     new domain::HeartbeatHandler(MAV_TYPE_FIXED_WING, communicator);
     new domain::SendPositionHandler(communicator, m_model);
+    new domain::SendAttitudeHandler(communicator, m_model);
 
     return communicator;
 }
