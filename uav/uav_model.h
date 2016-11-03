@@ -17,7 +17,9 @@ namespace domain
         float roll() const;
         float yaw() const;
 
-        float velocity() const;
+        float airspeed() const;
+        float groundspeed() const;
+        float climb() const;
 
         QGeoCoordinate position() const;
 
@@ -29,7 +31,8 @@ namespace domain
         float m_roll;
         float m_yaw;
 
-        float m_velocity;
+        float m_airspeed;
+        float m_climb;
 
         QGeoCoordinate m_position;
     };

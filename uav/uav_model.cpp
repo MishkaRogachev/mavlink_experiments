@@ -2,6 +2,8 @@
 
 // Qt
 #include <QDateTime>
+#include <QtMath>
+#include <QDebug>
 
 namespace
 {
@@ -31,7 +33,7 @@ UavModel::UavModel(QObject* parent):
     m_pitch(::randNum(-500, 500) * 0.1),
     m_roll(::randNum(-50, 500) * 0.1),
     m_yaw(::randNum(0, 360)),
-    m_velocity(::randNum(100, 250) * 0.1),
+    m_airspeed(::randNum(100, 250) * 0.1),
     m_position(55.9837, 37.2088)
 {
     qsrand(QDateTime::currentMSecsSinceEpoch() / 1000);
@@ -42,14 +44,16 @@ void UavModel::timerEvent(QTimerEvent* event)
 {
     Q_UNUSED(event)
 
-    double distance = m_velocity / ::timeFactor;
-    double distanceUp = m_pitch * distance;
+    m_climb = qSin(qDegreesToRadians(m_pitch)) * m_airspeed;
+
+    double distance = m_airspeed / ::timeFactor;
+    double distanceUp = m_climb / ::timeFactor;
 
     m_position = m_position.atDistanceAndAzimuth(distance, m_yaw, distanceUp);
 
-    m_velocity += ::randNum(-25, 25) * 0.1;
+    m_airspeed += ::randNum(-25, 25) * 0.1;
 
-    if (m_velocity < 0) m_velocity *= -1;
+    if (m_airspeed < 0) m_airspeed *= -1;
 
     m_pitch = formatPitchRoll(m_pitch + ::randNum(-500, 500) * 0.01);
     m_roll = formatPitchRoll(m_roll + ::randNum(-500, 500) * 0.01);
@@ -61,9 +65,19 @@ QGeoCoordinate UavModel::position() const
     return m_position;
 }
 
-float UavModel::velocity() const
+float UavModel::airspeed() const
 {
-    return m_velocity;
+    return m_airspeed;
+}
+
+float UavModel::groundspeed() const
+{
+    return m_airspeed; // TODO: wind
+}
+
+float UavModel::climb() const
+{
+    return m_climb;
 }
 
 float UavModel::yaw() const
