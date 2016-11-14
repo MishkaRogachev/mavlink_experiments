@@ -22,6 +22,7 @@ namespace domain
         float climb() const;
 
         QGeoCoordinate position() const;
+        QGeoCoordinate homePosition() const;
 
     protected:
         void timerEvent(QTimerEvent* event);
@@ -35,6 +36,7 @@ namespace domain
         float m_climb;
 
         QGeoCoordinate m_position;
+        QGeoCoordinate m_homePosition;
     };
 }
 

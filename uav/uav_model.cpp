@@ -50,6 +50,7 @@ void UavModel::timerEvent(QTimerEvent* event)
     double distanceUp = m_climb / ::timeFactor;
 
     m_position = m_position.atDistanceAndAzimuth(distance, m_yaw, distanceUp);
+    if (!m_homePosition.isValid()) m_homePosition = m_position;
 
     m_airspeed += ::randNum(-100, 100) * 0.001;
 
@@ -63,6 +64,11 @@ void UavModel::timerEvent(QTimerEvent* event)
 QGeoCoordinate UavModel::position() const
 {
     return m_position;
+}
+
+QGeoCoordinate UavModel::homePosition() const
+{
+    return m_homePosition;
 }
 
 float UavModel::airspeed() const
