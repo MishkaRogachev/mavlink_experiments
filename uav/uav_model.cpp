@@ -30,11 +30,11 @@ using namespace domain;
 
 UavModel::UavModel(QObject* parent):
     QObject(parent),
-    m_pitch(::randNum(-500, 500) * 0.1),
-    m_roll(::randNum(-50, 500) * 0.1),
+    m_pitch(::randNum(0, 600) * 0.1),
+    m_roll(::randNum(-50, 50) * 0.1),
     m_yaw(::randNum(0, 360)),
-    m_airspeed(::randNum(100, 250) * 0.1),
-    m_position(55.9837, 37.2088)
+    m_airspeed(::randNum(150, 500) * 0.1),
+    m_position(55.9837, 37.2088, 0)
 {
     qsrand(QDateTime::currentMSecsSinceEpoch() / 1000);
     this->startTimer(::interval);
@@ -51,7 +51,7 @@ void UavModel::timerEvent(QTimerEvent* event)
 
     m_position = m_position.atDistanceAndAzimuth(distance, m_yaw, distanceUp);
 
-    m_airspeed += ::randNum(-25, 25) * 0.1;
+    m_airspeed += ::randNum(-100, 100) * 0.001;
 
     if (m_airspeed < 0) m_airspeed *= -1;
 
