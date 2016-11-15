@@ -3,6 +3,9 @@
 // MAVLink
 #include <mavlink.h>
 
+// Qt
+#include <QDebug>
+
 // Internal
 #include "uav_model.h"
 #include "mavlink_communicator.h"
@@ -46,6 +49,8 @@ void SendHomePositionHandler::processMessage(const mavlink_message_t& message)
                                          decodeLatLon(home.latitude),
                                          decodeLatLon(home.longitude),
                                          decodeAltitude(home.altitude)));
+
+            this->sendHomePosition();
         }
     }
 }
