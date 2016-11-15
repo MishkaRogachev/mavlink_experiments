@@ -19,13 +19,22 @@ SendHomePositionHandler::SendHomePositionHandler(MavLinkCommunicator* communicat
 
 void SendHomePositionHandler::processMessage(const mavlink_message_t& message)
 {
-    Q_UNUSED(message)
+    if (message.msgid != MAVLINK_MSG_ID_COMMAND_LONG) return;
+
+    mavlink_command_long_t command;
+    mavlink_msg_command_long_decode(&message, &command);
+
+    if (command.target_system == m_communicator->systemId() &&
+        (command.target_component == m_communicator->componentId() ||
+         command.target_component == MAV_COMP_ID_ALL))
+    {
+        if (command.command == MAV_CMD_GET_HOME_POSITION)
+            this->sendHomePosition();
+    }
 }
 
-void SendHomePositionHandler::timerEvent(QTimerEvent* event)
+void SendHomePositionHandler::sendHomePosition()
 {
-    Q_UNUSED(event)
-
     mavlink_message_t message;
     mavlink_home_position_t position;
 

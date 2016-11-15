@@ -16,8 +16,7 @@ namespace domain
     public slots:
         void processMessage(const mavlink_message_t& message) override;
 
-    protected:
-        void timerEvent(QTimerEvent *event) override;
+        void sendHomePosition();
 
     private:
         UavModel* m_model;
