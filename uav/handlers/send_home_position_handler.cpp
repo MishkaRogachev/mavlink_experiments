@@ -7,6 +7,8 @@
 #include "uav_model.h"
 #include "mavlink_communicator.h"
 
+#include "mavlink_protocol_helpers.h"
+
 using namespace domain;
 
 SendHomePositionHandler::SendHomePositionHandler(MavLinkCommunicator* communicator,
@@ -19,17 +21,32 @@ SendHomePositionHandler::SendHomePositionHandler(MavLinkCommunicator* communicat
 
 void SendHomePositionHandler::processMessage(const mavlink_message_t& message)
 {
-    if (message.msgid != MAVLINK_MSG_ID_COMMAND_LONG) return;
-
-    mavlink_command_long_t command;
-    mavlink_msg_command_long_decode(&message, &command);
-
-    if (command.target_system == m_communicator->systemId() &&
-        (command.target_component == m_communicator->componentId() ||
-         command.target_component == MAV_COMP_ID_ALL))
+    if (message.msgid == MAVLINK_MSG_ID_COMMAND_LONG)
     {
-        if (command.command == MAV_CMD_GET_HOME_POSITION)
-            this->sendHomePosition();
+        mavlink_command_long_t command;
+        mavlink_msg_command_long_decode(&message, &command);
+
+        if (command.target_system == m_communicator->systemId() &&
+            (command.target_component == m_communicator->componentId() ||
+             command.target_component == MAV_COMP_ID_ALL))
+        {
+            if (command.command == MAV_CMD_GET_HOME_POSITION)
+                this->sendHomePosition();
+        }
+    }
+
+    if (message.msgid == MAVLINK_MSG_ID_SET_HOME_POSITION)
+    {
+        mavlink_set_home_position_t home;
+        mavlink_msg_set_home_position_decode(&message, &home);
+
+        if (home.target_system == m_communicator->systemId())
+        {
+            m_model->setHomePosition(QGeoCoordinate(
+                                         decodeLatLon(home.latitude),
+                                         decodeLatLon(home.longitude),
+                                         decodeAltitude(home.altitude)));
+        }
     }
 }
 
@@ -39,9 +56,9 @@ void SendHomePositionHandler::sendHomePosition()
     mavlink_home_position_t position;
 
     QGeoCoordinate coordinate = m_model->homePosition();
-    position.latitude = coordinate.latitude() * 1e7;
-    position.longitude = coordinate.longitude() * 1e7;
-    position.altitude = coordinate.altitude() * 1000;
+    position.latitude = encodeLatLon(coordinate.latitude());
+    position.longitude = encodeLatLon(coordinate.longitude());
+    position.altitude = encodeAltitude(coordinate.altitude());
 
     mavlink_msg_home_position_encode(m_communicator->systemId(),
                                      m_communicator->componentId(),

@@ -7,6 +7,8 @@
 #include "uav_model.h"
 #include "mavlink_communicator.h"
 
+#include "mavlink_protocol_helpers.h"
+
 using namespace domain;
 
 SendPositionHandler::SendPositionHandler(MavLinkCommunicator* communicator,
@@ -30,9 +32,9 @@ void SendPositionHandler::timerEvent(QTimerEvent* event)
     mavlink_global_position_int_cov_t position;
 
     QGeoCoordinate coordinate = m_model->position();
-    position.lat = coordinate.latitude() * 1e7;
-    position.lon = coordinate.longitude() * 1e7;
-    position.alt = coordinate.altitude() * 1000;
+    position.lat = encodeLatLon(coordinate.latitude());
+    position.lon = encodeLatLon(coordinate.longitude());
+    position.alt = encodeAltitude(coordinate.altitude());
 
     mavlink_msg_global_position_int_cov_encode(m_communicator->systemId(),
                                                m_communicator->componentId(),

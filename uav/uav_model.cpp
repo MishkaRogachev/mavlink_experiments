@@ -71,6 +71,11 @@ QGeoCoordinate UavModel::homePosition() const
     return m_homePosition;
 }
 
+void UavModel::setHomePosition(const QGeoCoordinate& homePosition)
+{
+    m_homePosition = homePosition;
+}
+
 float UavModel::airspeed() const
 {
     return m_airspeed;

@@ -24,6 +24,9 @@ namespace domain
         QGeoCoordinate position() const;
         QGeoCoordinate homePosition() const;
 
+    public slots:
+        void setHomePosition(const QGeoCoordinate& homePosition);
+
     protected:
         void timerEvent(QTimerEvent* event);
 
