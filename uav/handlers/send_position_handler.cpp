@@ -29,16 +29,16 @@ void SendPositionHandler::timerEvent(QTimerEvent* event)
     Q_UNUSED(event)
 
     mavlink_message_t message;
-    mavlink_global_position_int_cov_t position;
+    mavlink_global_position_int_t position;
 
     QGeoCoordinate coordinate = m_model->position();
     position.lat = encodeLatLon(coordinate.latitude());
     position.lon = encodeLatLon(coordinate.longitude());
     position.alt = encodeAltitude(coordinate.altitude());
 
-    mavlink_msg_global_position_int_cov_encode(m_communicator->systemId(),
-                                               m_communicator->componentId(),
-                                               &message, &position);
+    mavlink_msg_global_position_int_encode(m_communicator->systemId(),
+                                           m_communicator->componentId(),
+                                           &message, &position);
 
     m_communicator->sendMessageOnLastReceivedLink(message);
 }
