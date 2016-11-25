@@ -16,7 +16,7 @@ SendPositionHandler::SendPositionHandler(MavLinkCommunicator* communicator,
     AbstractHandler(communicator),
     m_model(model)
 {
-    this->startTimer(100); // 10 Hz
+    this->startTimer(500); // 2 Hz
 }
 
 void SendPositionHandler::processMessage(const mavlink_message_t& message)

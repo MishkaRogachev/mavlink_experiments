@@ -1,11 +1,11 @@
 #include "send_attitude_handler.h"
 
+// MAVLink
+#include <mavlink.h>
+
 // Qt
 #include <QtMath>
 #include <QDebug>
-
-// MAVLink
-#include <mavlink.h>
 
 // Internal
 #include "uav_model.h"
