@@ -28,8 +28,8 @@ set(LIBRARIES
 )
 
 # Include mavlink headers globaly
-include_directories("3dparty/mavlink_v1")
-include_directories("3dparty/mavlink_v1/ardupilotmega")
+include_directories("3dparty/mavlink_v2")
+include_directories("3dparty/mavlink_v2/ardupilotmega")
 
 # Subdirectories
 add_subdirectory(common)
